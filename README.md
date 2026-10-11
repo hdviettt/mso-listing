@@ -52,51 +52,6 @@ flowchart TD
 The UI diagram uses standard flowchart shapes: ovals for start and outcomes, rectangles for processing, and diamonds for the two yes/no decisions. These README diagrams use GitHub-supported Mermaid code fences. The browser streams receive, extraction, policy, and routing events as the server completes them.
 
 ## System Architecture
-
-                            [ SHADY SELLER FORM ]
-                                      │
-                                      ▼
-  ┌──────────────────────────────────────────────────────────────────────────────┐
-  │ 1. WEB UI / LISTING INPUT PANEL                                             │
-  │ - Collects title, description, category, price, vendor metadata             │
-  │ - Allows submission of deceptive or borderline product listings              │
-  │ - Shows the raw payload before processing                                    │
-  └───────────────────────────────────────────────┬──────────────────────────────┘
-                                                  │
-                                                  ▼
-  ┌──────────────────────────────────────────────────────────────────────────────┐
-  │ 2. API GATEWAY / INTERCEPTION LAYER                                           │
-  │ - Receives listing request                                                    │
-  │ - Stores raw payload and timestamps                                           │
-  │ - Triggers the moderation pipeline before persistence                         │
-  └───────────────────────────────────────────────┬──────────────────────────────┘
-                                                  │
-                                                  ▼
-  ┌──────────────────────────────────────────────────────────────────────────────┐
-  │ 3. COGNITIVE EXTRACTION LAYER                                              │
-  │ - Uses a local LLM to normalize seller wording into structured fields        │
-  │ - Produces JSON with risk signals, ambiguity, and confidence                 │
-  │ - Returns machine-readable extraction results                                 │
-  └───────────────────────────────────────────────┬──────────────────────────────┘
-                                                  │
-                                                  ▼
-  ┌──────────────────────────────────────────────────────────────────────────────┐
-  │ 4. DETERMINISTIC POLICY ENFORCEMENT ENGINE                                  │
-  │ - Evaluates extracted fields against active SQLite policy tables            │
-  │ - Applies versioned rules and reason codes                                   │
-  │ - Produces allow, reject, or review decision                                  │
-  └───────────────────────────────────────────────┬──────────────────────────────┘
-                                                  │
-                  ┌───────────────────────────────┴───────────────────────────────┐
-                  │                                                               │
-                  ▼                                                               ▼
-  ┌──────────────────────────────────────┐              ┌──────────────────────────────────────┐
-  │ 5A. QUARANTINE / REJECTION FLOW      │              │ 5B. ALLOW / PERSIST FLOW              │
-  │ - HTTP 422 response                  │              │ - Write allowed listing to SQLite    │
-  │ - Review queue creation              │              │ - Emit decision audit log            │
-  │ - Reason codes and risk metadata     │              │ - Render result in right panel       │
-  └──────────────────────────────────────┘              └──────────────────────────────────────┘
-
 ### Request sequence
 
 ```mermaid
