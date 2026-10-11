@@ -1,0 +1,25 @@
+﻿{
+  "version_name": "v1",
+  "created_by": "ops_admin",
+  "prohibited_products": [
+    { "normalized_product_type": "e_cigarette", "category": "electronics", "risk_level": "high" },
+    { "normalized_product_type": "vape_device", "category": "electronics", "risk_level": "high" },
+    { "normalized_product_type": "disposable_vape", "category": "wellness", "risk_level": "high" },
+    { "normalized_product_type": "concealed_weapon", "category": "weapon", "risk_level": "critical" },
+    { "normalized_product_type": "controlled_substance", "category": "health", "risk_level": "critical" }
+  ],
+  "rules": [
+    {
+      "rule_name": "prohibited_e_cigarette",
+      "rule_type": "normalized_product_type",
+      "match": ["e_cigarette", "vape_device", "disposable_vape"],
+      "severity": "high"
+    },
+    {
+      "rule_name": "ambiguous_disguised_listing",
+      "rule_type": "risk_signal",
+      "match": ["disguised_branding", "euphemistic_language", "wellness_evasion"],
+      "severity": "medium"
+    }
+  ]
+}

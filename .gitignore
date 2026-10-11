@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+marketplace_policy.db
+.venv/
+.env
+specs.md

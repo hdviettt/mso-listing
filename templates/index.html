@@ -1,0 +1,165 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marketplace safety workbench</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <nav class="activity-rail" aria-label="Workspace views">
+        <button class="rail-button active" data-view="workbench" aria-label="Submission workbench" title="Submission workbench">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.75h14v14.5H5zM8 8h8M8 12h8M8 16h5"/></svg>
+        </button>
+        <button class="rail-button" data-view="pipeline" aria-label="Listing evaluation" title="Listing evaluation">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="6" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="12" cy="18" r="2"/><path d="m6.7 10.8 3.6-3.5m3.4 0 3.6 3.5m0 3.4-3.6 3.5m-3.4 0-3.6-3.5"/></svg>
+        </button>
+        <button class="rail-button" data-view="rules" aria-label="Policy tables" title="Policy tables">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="5" rx="7.5" ry="2.5"/><path d="M4.5 5v7c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5V5M4.5 12v7c0 1.4 3.4 2.5 7.5 2.5s7.5-1.1 7.5-2.5v-7"/></svg>
+        </button>
+        <button class="rail-button" data-view="submissions" aria-label="Submission records" title="Submission records">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 9h16M9 9v10M13 13h4M13 16h4"/></svg>
+        </button>
+      </nav>
+
+      <main class="main-content" data-view="workbench">
+        <section class="upper-workspace" aria-label="Listing evaluation workspace">
+          <section class="panel pane submission-pane" id="submission-pane">
+            <div class="pane-heading"><h2>Seller submission</h2><span class="pane-context">Input record</span></div>
+            <form id="listing-form">
+              <label for="vendor_id">vendor_id</label><input type="text" id="vendor_id" name="vendor_id" value="vendor_42" />
+              <label for="title">title</label><input type="text" id="title" name="title" value="Premium electronic aromatherapy straw 2025" />
+              <div class="form-row"><div><label for="declared_category">declared_category</label><input type="text" id="declared_category" name="declared_category" value="Wellness" /></div><div><label for="price">price</label><input type="number" step="0.01" id="price" name="price" value="29.99" /></div></div>
+              <label for="description">description</label><textarea id="description" name="description" rows="4">Lightweight vapor stick for relaxing sessions. Secret style. Premium flavor and hidden cooling effect.</textarea>
+              <label for="seller_notes">seller_metadata.seller_notes</label><textarea id="seller_notes" name="seller_notes" rows="3">New store. Low cost. Hidden wellness product with special aroma.</textarea>
+              <button type="submit" class="button-primary" id="submit-listing">Evaluate listing</button>
+            </form>
+          </section>
+          <div class="splitter vertical-splitter" role="separator" aria-orientation="vertical" aria-label="Resize seller submission pane" data-resize="submission"></div>
+
+          <section class="panel pane pipeline-pane" id="pipeline-pane">
+            <div class="pane-heading"><h2>Listing evaluation</h2><span id="run-state" class="pane-context">Ready</span></div>
+                        <div class="pipeline-canvas" aria-label="Listing moderation flowchart">
+              <svg class="flowchart flowchart-wide" viewBox="0 0 800 600" aria-label="Listing moderation flowchart">
+                <title>Listing moderation flowchart</title>
+                <defs><marker id="flow-arrow-wide" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M1 1 L6 4 L1 7" /></marker></defs>
+                <path class="flow-connector" d="M400 51 V73" marker-end="url(#flow-arrow-wide)" />
+                <path class="flow-connector" d="M400 127 V138" marker-end="url(#flow-arrow-wide)" />
+                <path class="flow-connector" d="M400 192 V203" marker-end="url(#flow-arrow-wide)" />
+                <path class="flow-connector" d="M400 257 V269" marker-end="url(#flow-arrow-wide)" />
+                <path class="flow-connector" d="M400 361 V394" marker-end="url(#flow-arrow-wide)" data-branch="shared" />
+                <path class="flow-connector" d="M510 315 H603" marker-end="url(#flow-arrow-wide)" data-branch="reject" />
+                <path class="flow-connector" d="M290 440 H195" marker-end="url(#flow-arrow-wide)" data-branch="review" />
+                <path class="flow-connector" d="M400 486 V518" marker-end="url(#flow-arrow-wide)" data-branch="allow" />
+                <g class="flow-terminal start-terminal"><ellipse class="flow-shape" cx="400" cy="30" rx="72" ry="21" /><text class="terminal-title" x="400" y="35">Start</text></g>
+                <g class="flow-node process-node selected" data-stage="intake" role="button" tabindex="0" aria-label="Receive seller listing, waiting">
+                  <rect class="flow-shape" x="270" y="73" width="260" height="54" rx="3" />
+                  <text class="flow-title" x="400" y="94">Receive seller listing</text><text class="flow-detail" x="400" y="110">Validate submitted fields</text><text class="flow-state" x="400" y="123">waiting</text>
+                </g>
+                <g class="flow-node process-node" data-stage="extraction" role="button" tabindex="0" aria-label="Extract product attributes, waiting">
+                  <rect class="flow-shape" x="270" y="138" width="260" height="54" rx="3" />
+                  <text class="flow-title" x="400" y="159">Extract product attributes</text><text class="flow-detail" x="400" y="175">Model or heuristic output, then validation</text><text class="flow-state" x="400" y="188">waiting</text>
+                </g>
+                <g class="flow-node process-node" data-stage="policy" role="button" tabindex="0" aria-label="Match active policy, waiting">
+                  <rect class="flow-shape" x="270" y="203" width="260" height="54" rx="3" />
+                  <text class="flow-title" x="400" y="224">Match active policy</text><text class="flow-detail" x="400" y="240">Product rules and risk signals</text><text class="flow-state" x="400" y="253">waiting</text>
+                </g>
+                <g class="flow-node decision-node" data-stage="routing" data-decision-node="prohibited" role="button" tabindex="0" aria-label="Decision, prohibited rule match">
+                  <polygon class="flow-shape" points="400,269 510,315 400,361 290,315" />
+                  <text class="flow-title" x="400" y="309">Blocking policy</text><text class="flow-title" x="400" y="327">match?</text><text class="flow-state" x="400" y="345">waiting</text>
+                </g>
+                <text class="branch-label" data-branch="reject" x="556" y="305">Yes</text><text class="branch-label" data-branch="shared" x="414" y="386">No</text>
+                <g class="flow-terminal outcome-node" data-outcome="reject"><ellipse class="flow-shape" cx="695" cy="315" rx="92" ry="31" /><text class="terminal-title" x="695" y="312">Quarantine</text><text class="terminal-detail" x="695" y="328">Write blocked</text><text class="outcome-state" x="695" y="360">not selected</text></g>
+                <g class="flow-node decision-node" data-stage="routing" data-decision-node="ambiguous" role="button" tabindex="0" aria-label="Decision, ambiguous listing">
+                  <polygon class="flow-shape" points="400,394 510,440 400,486 290,440" />
+                  <text class="flow-title" x="400" y="434">Ambiguous or</text><text class="flow-title" x="400" y="452">obfuscated?</text><text class="flow-state" x="400" y="470">waiting</text>
+                </g>
+                <text class="branch-label" data-branch="review" x="240" y="430">Yes</text><text class="branch-label" data-branch="allow" x="414" y="508">No</text>
+                <g class="flow-terminal outcome-node" data-outcome="review"><ellipse class="flow-shape" cx="105" cy="440" rx="90" ry="31" /><text class="terminal-title" x="105" y="437">Review queue</text><text class="terminal-detail" x="105" y="453">Human assessment</text><text class="outcome-state" x="105" y="484">not selected</text></g>
+                <g class="flow-terminal outcome-node" data-outcome="allow"><ellipse class="flow-shape" cx="400" cy="548" rx="100" ry="30" /><text class="terminal-title" x="400" y="545">Catalog</text><text class="terminal-detail" x="400" y="561">Listing accepted</text><text class="outcome-state" x="400" y="591">not selected</text></g>
+              </svg>
+              <svg class="flowchart flowchart-compact" viewBox="0 0 500 620" aria-label="Listing moderation flowchart">
+                <title>Listing moderation flowchart</title>
+                <defs><marker id="flow-arrow-compact" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M1 1 L6 4 L1 7" /></marker></defs>
+                <path class="flow-connector" d="M250 45 V69" marker-end="url(#flow-arrow-compact)" />
+                <path class="flow-connector" d="M250 121 V138" marker-end="url(#flow-arrow-compact)" />
+                <path class="flow-connector" d="M250 190 V207" marker-end="url(#flow-arrow-compact)" />
+                <path class="flow-connector" d="M250 259 V271" marker-end="url(#flow-arrow-compact)" />
+                <path class="flow-connector" d="M250 359 V386" marker-end="url(#flow-arrow-compact)" data-branch="shared" />
+                <path class="flow-connector" d="M334 315 H366" marker-end="url(#flow-arrow-compact)" data-branch="reject" />
+                <path class="flow-connector" d="M166 430 H127" marker-end="url(#flow-arrow-compact)" data-branch="review" />
+                <path class="flow-connector" d="M250 474 V534" marker-end="url(#flow-arrow-compact)" data-branch="allow" />
+                <g class="flow-terminal start-terminal"><ellipse class="flow-shape" cx="250" cy="28" rx="66" ry="18" /><text class="terminal-title" x="250" y="33">Start</text></g>
+                <g class="flow-node process-node selected" data-stage="intake" role="button" tabindex="0" aria-label="Receive seller listing, waiting">
+                  <rect class="flow-shape" x="125" y="69" width="250" height="52" rx="3" />
+                  <text class="flow-title" x="250" y="89">Receive seller listing</text><text class="flow-detail" x="250" y="104">Validate submitted fields</text><text class="flow-state" x="250" y="117">waiting</text>
+                </g>
+                <g class="flow-node process-node" data-stage="extraction" role="button" tabindex="0" aria-label="Extract product attributes, waiting">
+                  <rect class="flow-shape" x="125" y="138" width="250" height="52" rx="3" />
+                  <text class="flow-title" x="250" y="158">Extract product attributes</text><text class="flow-detail" x="250" y="173">Model or heuristic output, then validation</text><text class="flow-state" x="250" y="186">waiting</text>
+                </g>
+                <g class="flow-node process-node" data-stage="policy" role="button" tabindex="0" aria-label="Match active policy, waiting">
+                  <rect class="flow-shape" x="125" y="207" width="250" height="52" rx="3" />
+                  <text class="flow-title" x="250" y="227">Match active policy</text><text class="flow-detail" x="250" y="242">Product rules and risk signals</text><text class="flow-state" x="250" y="255">waiting</text>
+                </g>
+                <g class="flow-node decision-node" data-stage="routing" data-decision-node="prohibited" role="button" tabindex="0" aria-label="Decision, prohibited rule match">
+                  <polygon class="flow-shape" points="250,271 334,315 250,359 166,315" />
+                  <text class="flow-title" x="250" y="308">Blocking policy</text><text class="flow-title" x="250" y="326">match?</text><text class="flow-state" x="250" y="345">waiting</text>
+                </g>
+                <text class="branch-label" data-branch="reject" x="344" y="305">Yes</text><text class="branch-label" data-branch="shared" x="264" y="381">No</text>
+                <g class="flow-terminal outcome-node" data-outcome="reject"><ellipse class="flow-shape" cx="430" cy="315" rx="64" ry="27" /><text class="terminal-title" x="430" y="313">Quarantine</text><text class="terminal-detail" x="430" y="328">Blocked</text><text class="outcome-state" x="430" y="353">not selected</text></g>
+                <g class="flow-node decision-node" data-stage="routing" data-decision-node="ambiguous" role="button" tabindex="0" aria-label="Decision, ambiguous listing">
+                  <polygon class="flow-shape" points="250,386 334,430 250,474 166,430" />
+                  <text class="flow-title" x="250" y="423">Ambiguous or</text><text class="flow-title" x="250" y="441">obfuscated?</text><text class="flow-state" x="250" y="460">waiting</text>
+                </g>
+                <text class="branch-label" data-branch="review" x="136" y="420">Yes</text><text class="branch-label" data-branch="allow" x="264" y="527">No</text>
+                <g class="flow-terminal outcome-node" data-outcome="review"><ellipse class="flow-shape" cx="68" cy="430" rx="57" ry="27" /><text class="terminal-title" x="68" y="428">Review queue</text><text class="terminal-detail" x="68" y="443">Human review</text><text class="outcome-state" x="68" y="473">not selected</text></g>
+                <g class="flow-terminal outcome-node" data-outcome="allow"><ellipse class="flow-shape" cx="250" cy="560" rx="92" ry="27" /><text class="terminal-title" x="250" y="558">Catalog</text><text class="terminal-detail" x="250" y="573">Listing accepted</text><text class="outcome-state" x="250" y="602">not selected</text></g>
+              </svg>
+            </div><div class="trace-table-wrap">
+              <div class="table-toolbar"><span>Step log</span><span id="trace-count">0 rows</span></div>
+              <div class="table-scroll"><table class="data-table"><thead><tr><th>step</th><th>stage</th><th>result</th></tr></thead><tbody id="trace-table-body"><tr><td colspan="3" class="empty-cell">Submit a listing to start evaluation.</td></tr></tbody></table></div>
+            </div>
+          </section>
+          <div class="splitter vertical-splitter" role="separator" aria-orientation="vertical" aria-label="Resize properties pane" data-resize="inspector"></div>
+
+          <aside class="panel pane inspector-pane" aria-label="Properties for selected evaluation stage">
+            <div class="pane-heading"><h2>Stage properties</h2><span id="inspector-stage" class="pane-context">Receive</span></div>
+            <div id="inspector-content" class="inspector-content"></div>
+          </aside>
+        </section>
+
+        <div class="splitter horizontal-splitter" role="separator" aria-orientation="horizontal" aria-label="Resize database area"></div>
+
+        <section class="panel database-pane" id="database-pane" aria-label="Database records">
+          <div class="database-toolbar">
+            <div class="dataset-tabs" role="tablist" aria-label="Database tables">
+              <button class="dataset-tab active" type="button" role="tab" aria-selected="true" data-dataset="rules">policy_rules</button>
+              <button class="dataset-tab" type="button" role="tab" aria-selected="false" data-dataset="products">prohibited_products</button>
+              <button class="dataset-tab" type="button" role="tab" aria-selected="false" data-dataset="submissions">listing_submissions + moderation_decisions</button>
+            </div>
+            <span class="db-connection"><span class="state-dot"></span>marketplace_policy.db</span>
+          </div>
+          <div class="dataset-meta"><span id="dataset-name">policy_rules</span><span id="database-count">0 rows</span></div>
+          <div class="table-scroll database-table-scroll"><table class="data-table database-table"><thead id="dataset-head"></thead><tbody id="dataset-body"><tr><td class="empty-cell">Loading table…</td></tr></tbody></table></div>
+        </section>
+      </main>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
